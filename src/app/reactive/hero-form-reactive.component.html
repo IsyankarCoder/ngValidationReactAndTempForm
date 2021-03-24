@@ -1,0 +1,12 @@
+<div class="container">
+     <h1>Reactive Form</h1>
+     <form [formGroup] = "heroForm" #formdir="heroForm">
+           <div [hidden]="formdir.submitted">
+
+           </div>
+           <div class="submitted-message" *ngIf="formdir.submitted">
+              <p>You have submitted your hero , {{heroForm.value.name}}!</p>
+              <button (click)="formdir.resetForm({})">Add new hero </button>
+           </div>
+     </form>     
+</div>
