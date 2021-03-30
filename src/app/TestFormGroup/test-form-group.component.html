@@ -1,0 +1,23 @@
+<h1>Angular 11 Forms Example</h1>
+<form [formGroup]="exampleForm" #f="ngForm">
+   <div class="form-group">
+       <label>First Name</label>
+       <input class="form-control" formControlName="firstname"  id="name">      
+       <label>Last Name</label>
+       <input class="form-control" formControlName="lastname">
+       <label>Power</label>
+       <input class="form-control" formControlName="power">
+   </div>
+   <div formArrayName="alias">
+       <h3>Add Alias</h3>
+       <button (click) ="addNewAlias();">Add another alias</button>
+       <div *ngFor="let item of aliases.controls; let i=index">
+           <input type="text" [id]="i" [formControlName]="i">
+           {{item.value}}
+       </div>
+   </div>
+   <div>
+         {{firstName}}--{{lastName}}--{{Power}}
+         Form Status : {{f.valid}}
+   </div>
+</form>

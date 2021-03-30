@@ -1,9 +1,7 @@
-import {Component,OnInit} from '@angular/core';
+import {Component,OnInit, SimpleChange} from '@angular/core';
 import {FormControl,FormGroup,Validators} from '@angular/forms';
-import {identityRevealedValidator} from '../shared/identity-revealed.directive';
-import {UniqueAlterEgoValidator} from '../shared/alter-ego.directive';
 import {forbiddenNameValidator} from '../shared/forbidden-name.directive';
-
+ 
 @Component({
     selector:"app-hero-form-reactive",    
     templateUrl:"./hero-form-reactive.component.html",
@@ -11,19 +9,20 @@ import {forbiddenNameValidator} from '../shared/forbidden-name.directive';
 })
 export class HeroComponentReactiveForm implements OnInit{
     powers=["Relly Smart","Super Flexible","Weather Changer"];
-    hero = {name:"Dr.", alterEgo:"Dr. What" ,power:this.powers[0]};
-    heroForm =  new FormGroup({
-        name: new FormControl(this.hero.name,[Validators.required,Validators.minLength(4),forbiddenNameValidator(/bob/i)]),
-        alterEgo: new FormControl(this.hero.alterEgo,{asyncValidators:[this.alterEgoValidator.validate.bind(this.alterEgoValidator)],updateOn:'blur'}),
-        power: new FormControl(this.hero.power,Validators.required)         
-     },{validators:identityRevealedValidator});
+    hero = {name:"Dr.", alterEgo:"Dr. What" , power:this.powers[0]};
+    heroForm:FormGroup;
 
-    constructor(private alterEgoValidator:UniqueAlterEgoValidator){
-    
+    changeLog = [];
+    constructor(){
+        this.heroForm = new FormGroup({
+            name: new FormControl(this.hero.name,[Validators.required,Validators.minLength(4),forbiddenNameValidator(/bob/i)]),
+            alterEgo: new FormControl(this.hero.alterEgo,Validators.required),
+            power: new FormControl(this.hero.power,Validators.required)         
+         }); 
     }
-
+ 
     ngOnInit():void{ 
-       
+      
     } 
 
     get power(){
@@ -33,5 +32,9 @@ export class HeroComponentReactiveForm implements OnInit{
 
     get alterEgo(){
     return this.heroForm.get('alterEgo');
+    }
+
+    get FormErrors(){
+         return this.heroForm.errors;
     }
 }
